@@ -16,8 +16,7 @@ async function addUserIfNotExists(email: string, name: string) {
       SELECT * FROM users WHERE email = ${email}
     `;
 
-    // @ts-ignore
-    if (user.length === 0) {
+    if (user.rowCount === 0) {
       await client.sql`
         INSERT INTO users (name, email)
         VALUES (${name}, ${email})
@@ -52,6 +51,7 @@ export const options : NextAuthOptions = {
     async signIn({ user, account, profile }) {
       const email = user.email as string;
       const name = user.name as string;
+      console.log(123)
       await addUserIfNotExists(email, name);
       return true;
     },
